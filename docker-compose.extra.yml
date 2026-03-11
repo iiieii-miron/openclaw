@@ -5,6 +5,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
     volumes:
       - ./:/host-openclaw
+      - /var/run/docker.sock:/var/run/docker.sock
 
   openclaw-cli:
     environment:
@@ -12,4 +13,4 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
     volumes:
       - ./:/host-openclaw
-
+      - /var/run/docker.sock:/var/run/docker.sock
