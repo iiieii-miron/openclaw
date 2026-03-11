@@ -14,3 +14,21 @@ services:
     volumes:
       - ./:/host-openclaw
       - /var/run/docker.sock:/var/run/docker.sock
+
+
+  alice-miron-bridge:
+    image: alice-miron-bridge:local
+    restart: unless-stopped
+    depends_on:
+      - openclaw-gateway
+    environment:
+      PORT: 3005
+      OPENCLAW_BASE_URL: http://openclaw-gateway:18789
+      OPENCLAW_AGENT_ID: main
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      OPENCLAW_HOOKS_TOKEN: ${OPENCLAW_HOOKS_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-324436087}
+      SYNC_TIMEOUT_MS: ${ALICE_MIRON_SYNC_TIMEOUT_MS:-8000}
+      OPENCLAW_SESSION_PREFIX: alice:miron:
+    ports:
+      - "${ALICE_MIRON_BRIDGE_PORT:-3005}:3005"
