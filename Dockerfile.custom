@@ -1,4 +1,4 @@
-FROM ghcr.io/openclaw/openclaw:2026.3.14
+FROM ghcr.io/openclaw/openclaw:main@sha256:e626d094bdf0ef647b48950d10a02a82222e74f61be182b367e291c538ee754f
 
 USER root
 
