@@ -11,6 +11,7 @@ RUN apt-get update \
     docker.io \
     gh \
     git \
+    openssh-client \
   && curl -LsSf https://astral.sh/uv/install.sh | sh \
   && ln -sf /root/.local/bin/uv /usr/local/bin/uv \
   && curl -L "https://github.com/docker/compose/releases/download/v${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose \
