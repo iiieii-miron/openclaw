@@ -1,0 +1,42 @@
+services:
+  openclaw-gateway:
+    environment:
+      OVERSEERR_URL: ${OVERSEERR_URL}
+      OVERSEERR_API_KEY: ${OVERSEERR_API_KEY}
+      GH_TOKEN: ${GH_TOKEN}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+    volumes:
+      - ./:/host-openclaw
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  openclaw-cli:
+    environment:
+      OVERSEERR_URL: ${OVERSEERR_URL}
+      OVERSEERR_API_KEY: ${OVERSEERR_API_KEY}
+      GH_TOKEN: ${GH_TOKEN}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+    volumes:
+      - ./:/host-openclaw
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  alice-miron-bridge:
+    image: alice-miron-bridge:local
+    restart: unless-stopped
+    depends_on:
+      - openclaw-gateway
+    environment:
+      PORT: 3005
+      OPENCLAW_BASE_URL: http://openclaw-gateway:18789
+      OPENCLAW_AGENT_ID: alice
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      OPENCLAW_HOOKS_TOKEN: ${OPENCLAW_HOOKS_TOKEN}
+      ALICE_OAUTH_CLIENT_ID: ${ALICE_OAUTH_CLIENT_ID}
+      ALICE_OAUTH_CLIENT_SECRET: ${ALICE_OAUTH_CLIENT_SECRET}
+      ALICE_OAUTH_OWNER_USERNAME: ${ALICE_OAUTH_OWNER_USERNAME:-alex}
+      ALICE_OAUTH_OWNER_PASSWORD: ${ALICE_OAUTH_OWNER_PASSWORD}
+      ALICE_OAUTH_SIGNING_SECRET: ${ALICE_OAUTH_SIGNING_SECRET}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-324436087}
+      SYNC_TIMEOUT_MS: ${ALICE_MIRON_SYNC_TIMEOUT_MS:-3500}
+      OPENCLAW_SESSION_PREFIX: "alice:miron:"
+    ports:
+      - "${ALICE_MIRON_BRIDGE_PORT:-3005}:3005"
